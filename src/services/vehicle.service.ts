@@ -79,3 +79,18 @@ export async function deleteVehicle(id: string): Promise<void> {
     throw new Error(error.message);
   }
 }
+export async function getAvailableVehicles(): Promise<
+  Vehicle[]
+> {
+  const { data, error } = await supabase
+    .from("vehicles")
+    .select("*")
+    .eq("status", "Available")
+    .order("registration_number");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data ?? []) as Vehicle[];
+}
